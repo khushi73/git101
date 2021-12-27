@@ -36,9 +36,9 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     needs: [laravel-tests]
     runs-on: ubuntu-latest
-  
-    - name: PR Merge
+    steps: 
+    - name:  Merge
       uses: actions-cool/pr-merge@v0.0.1-beat
       with:
     # Secret GitHub API token to use for making API requests.
-        GITHUB_TOKEN:  ${{ github.PUT_TOKEN }}
+         GITHUB_TOKEN:  ${{ github.PUT_TOKEN }}
