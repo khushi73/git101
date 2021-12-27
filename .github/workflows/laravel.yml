@@ -32,14 +32,27 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
-     
-  merge-tests:
-    if: github.ref == 'refs/heads/develop'
-    needs: [laravel-tests]
+  
+  create-pull-request:
     runs-on: ubuntu-latest
-    steps: 
-    - name:  Merge
-      uses: actions-cool/pr-merge@v0.0.1-beat
-      with:
-    # Secret GitHub API token to use for making API requests.
-         GITHUB_TOKEN:  ${{ github.PUT_TOKEN }}
+    needs: [laravel-tests]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "develop"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "feature, automated pr"
+          pr_title: "[Example] Simple demo" 
+#   merge-tests:
+#     if: github.ref == 'refs/heads/develop'
+#     needs: [laravel-tests]
+#     runs-on: ubuntu-latest
+#     steps: 
+#     - name:  Merge
+#       uses: actions-cool/pr-merge@v0.0.1-beat
+#       with:
+#     # Secret GitHub API token to use for making API requests.
+#          GITHUB_TOKEN:  ${{ github.PUT_TOKEN }}
